@@ -285,7 +285,7 @@ public class Game implements Runnable {
 		for (Player player : werewolfGame.getPlayers()) {
 			if (player.getOriginalRole().equals(Werewolf.Role.INSOMNIAC)) {		
 				final String toSend = ("A lot happened tonight! As the insomniac, you have the benefit of seeing if any of tonight's events affected your role. After tonight, your role is " + (player.getRole().equals(player.getOriginalRole()) ? " still " : "") + " the " + player.getRole().getName() + ".");
-				nightEvents.add("The insomniac woke up to check their role again, learning that by the end of the night they were the " + player.getRole().getName() + ".");
+				nightEvents.add("The insomniac, " + player.getUser().getName() + ", woke up to check their role again, learning that by the end of the night they were the " + player.getRole().getName() + ".");
 				player.getUser().openPrivateChannel().queue((channel) ->
 				{
 					channel.sendMessage(toSend).queue();
@@ -413,7 +413,7 @@ public class Game implements Runnable {
 						resume();
 					} else {
 						this.troublemakerPlayerOne = troublemakerPlayer;
-						channel.sendMessage("Who would you like to swap " + troublemakerPlayer.getUser().getName() + "s role with? Please type the name of another player.").queue();
+						channel.sendMessage("Who would you like to swap " + troublemakerPlayer.getUser().getName() + "'s role with? Please type the name of another player.").queue();
 					}
 				} else {
 					channel.sendMessage("No player found by that name. Please type the name of a player whom you wish you swap roles with another. Alternatively, you may type **skip turn** to skip your turn.").queue();

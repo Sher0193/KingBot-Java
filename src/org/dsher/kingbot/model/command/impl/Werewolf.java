@@ -14,7 +14,9 @@ import net.dv8tion.jda.api.entities.User;
 public class Werewolf extends Command {
 
 	public Werewolf() {
-		helpEntry = "Under construction.";
+		String name = Bot.getBotInstance().getName();
+		String prefix = Bot.getBotInstance().getPrefix();
+		helpEntry = "**ONE NIGHT ULTIMATE WEREWOLF**\nA hidden-role style game. " + name + " will manage assigning roles, and walk the players through the night. For full ONUW rules, please see https://www.fgbradleys.com/rules/rules2/OneNightUltimateWerewolf-rules.pdf.\n**ARGUMENTS**\n``" + prefix + "ww create`` to create a new game instance for the current channel.\n``" + prefix + "ww end`` to remove said instance.\n``" + prefix + "ww join`` to join a game (that hasn't begun yet)\n``" + prefix + "ww leave`` to leave said game\n``" + prefix + "ww start`` to begin a game, once at least three players have joined.";
 		commands = new String[] {"werewolf", "ww"};
 	}
 
