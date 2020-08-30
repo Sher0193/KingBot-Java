@@ -21,7 +21,7 @@ public class Werewolf extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		if (args.length > 0) {
 			WerewolfHandler wwh = Bot.getBotInstance().getWerewolfHandler();
 			Game game = wwh.getGameById(channel.getId());

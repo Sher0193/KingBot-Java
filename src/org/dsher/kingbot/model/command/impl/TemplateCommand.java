@@ -15,7 +15,7 @@ public class TemplateCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		channel.sendMessage("Command successfully executed.").queue();
 		return true;
 	}

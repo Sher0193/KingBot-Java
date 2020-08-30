@@ -17,7 +17,7 @@ public class Stopwatch extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		if (args.length > 0 && Utils.isNumeric(args[0])) {
 			int time = Integer.parseInt(args[0]);
 			if (time % 5 == 0 && time <= 160) {

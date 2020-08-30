@@ -21,7 +21,7 @@ public class Score extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		if (author == null) {
 			return false;
 		}

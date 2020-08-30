@@ -7,8 +7,15 @@ public abstract class Command {
 
 	protected String helpEntry;
 	protected String[] commands;
+	
+	public void run (final String command, final String[] args, final MessageChannel channel, final User author) {
+		Thread t = new Thread(() -> {
+			this.execute(command, args, channel, author);
+		});
+		t.start();
+	}
 
-	public abstract boolean execute(String command, String[] args, MessageChannel channel, User author);
+	protected abstract boolean execute(String command, String[] args, MessageChannel channel, User author);
 
 	public String getHelpEntry() {
 		return helpEntry;

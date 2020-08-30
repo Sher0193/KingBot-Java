@@ -16,7 +16,7 @@ public class Roll extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		if (args.length > 0 && (args[0].toLowerCase().equals("s") || args[0].toLowerCase().equals("scattergories"))) {
 			channel.sendMessage(scattergoriesRoll()).queue();
 			return true;

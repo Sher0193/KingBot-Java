@@ -14,7 +14,7 @@ public class Ping extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		long time = System.currentTimeMillis();
 		channel.sendMessage("Pong!") /* => RestAction<Message> */
 		.queue(response /* => Message */ -> {

@@ -17,7 +17,7 @@ public class Scoreboard extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		if (channel.getType().equals(ChannelType.PRIVATE))
 			return false;
 		ScoreboardHandler sh = Bot.getBotInstance().getScoreboardHandler();

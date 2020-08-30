@@ -19,7 +19,7 @@ public class Help extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		if (args.length > 0) {
 			for (Command c : CommandHandler.getCommands()) {
 				if (c.isMatchingCommand(args[0])) {

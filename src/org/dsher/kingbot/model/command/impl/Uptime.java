@@ -14,7 +14,7 @@ public class Uptime extends Command {
 	}
 
 	@Override
-	public boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
 		long curTime = System.currentTimeMillis();
 	    long uptime = curTime - Bot.getBotInstance().getLaunchTime();
 
