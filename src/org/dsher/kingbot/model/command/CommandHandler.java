@@ -56,9 +56,13 @@ public class CommandHandler {
 	}
 
 	public static boolean handleCommand(String command, String[] args, MessageChannel channel, User author) {
-		Command cObj = getCommand(command);
+		final Command cObj = getCommand(command);
 		if (cObj != null) {
-			cObj.execute(command, args, channel, author);
+			Thread t = new Thread(() -> {
+				cObj.execute(command, args, channel, author);
+			});
+			t.start();
+
 		}
 		return false;
 	}
