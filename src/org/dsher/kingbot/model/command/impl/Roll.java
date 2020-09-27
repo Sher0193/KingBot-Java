@@ -1,6 +1,5 @@
 package org.dsher.kingbot.model.command.impl;
 
-import org.dsher.kingbot.Bot;
 import org.dsher.kingbot.model.command.Command;
 import org.dsher.kingbot.utils.Utils;
 
@@ -9,17 +8,21 @@ import net.dv8tion.jda.api.entities.User;
 
 public class Roll extends Command {
 
-	public Roll() {
-		String prefix = Bot.getBotInstance().getPrefix();
-		helpEntry = "``" + prefix + "roll x`` will return a random number between 1 and x. If no number is specified, ``" + prefix + "roll`` returns a number between 1 and 6.";
-		commands = new String[] {"roll"};
+	public Roll(String command, String[] args, MessageChannel channel, User author) {
+		super(command, args, channel, author);
+	}
+
+	private String scattergoriesRoll() {
+		char[] validScattergoryLetters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'W'};
+		int roll = Utils.getRandom(0, validScattergoryLetters.length - 1); 
+		return ":capital_abcd: **" + validScattergoryLetters[roll] + "**";
 	}
 
 	@Override
-	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	public void run() {
 		if (args.length > 0 && (args[0].toLowerCase().equals("s") || args[0].toLowerCase().equals("scattergories"))) {
 			channel.sendMessage(scattergoriesRoll()).queue();
-			return true;
+			return;
 		} else {
 			int high = 6, low = 1;
 			if (args.length > 0 && Utils.isNumeric(args[0])) {
@@ -35,14 +38,8 @@ public class Roll extends Command {
 			}
 			int roll = Utils.getRandom(low, high);
 			channel.sendMessage("(" + low + " -> " + high + ") :game_die: **" + roll + "**").queue();
-			return true;
+			return;
 		}
-	}
-	
-	private String scattergoriesRoll() {
-		char[] validScattergoryLetters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'W'};
-		int roll = Utils.getRandom(0, validScattergoryLetters.length - 1); 
-		return ":capital_abcd: **" + validScattergoryLetters[roll] + "**";
 	}
 
 }

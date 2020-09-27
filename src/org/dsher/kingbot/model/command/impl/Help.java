@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.dsher.kingbot.Bot;
 import org.dsher.kingbot.model.command.Command;
 import org.dsher.kingbot.model.command.CommandHandler;
+import org.dsher.kingbot.model.command.CommandHandler.CommandData;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -12,26 +13,25 @@ import net.dv8tion.jda.api.entities.User;
 
 public class Help extends Command {
 
-	public Help() {
-		String prefix = Bot.getBotInstance().getPrefix();
-		helpEntry = "Use \"" + prefix + "help\" to view an explanation for the various functions of " + Bot.getBotInstance().getName() + ". Use \"" + prefix + "help [command]\" to view an explanation for that command.";
-		commands = new String[] {"help"};
+
+	public Help(String command, String[] args, MessageChannel channel, User author) {
+		super(command, args, channel, author);
 	}
 
 	@Override
-	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	public void run() {
 		if (args.length > 0) {
-			for (Command c : CommandHandler.getCommands()) {
+			for (CommandData c : CommandHandler.CommandData.values()) {
 				if (c.isMatchingCommand(args[0])) {
 					channel.sendMessage(c.getHelpEntry()).queue();
-					return true;
+					return;
 				}
 			}
 			channel.sendMessage("No command found matching \"" + args[0] + "\".").queue();
-			return false;
+			return;
 		} else {
 			String commandList = "";
-			for (Command c : CommandHandler.getCommands()) {
+			for (CommandData c : CommandHandler.CommandData.values()) {
 				int i;
 				for (i = 0; i < c.getCommands().length; i++) {
 					commandList += Bot.getBotInstance().getPrefix() + c.getCommands()[i];
@@ -47,8 +47,9 @@ public class Help extends Command {
 					.setDescription(commandList)
 					.setFooter("Type \"" + prefix + "help [command]\" to learn more about a command, eg \"" + prefix + "help help\".");;
 					channel.sendMessage(builder.build()).queue();
-					return true;
+					return;
 		}
+		
 	}
 
 }

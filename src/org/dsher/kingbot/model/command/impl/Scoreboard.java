@@ -10,16 +10,14 @@ import net.dv8tion.jda.api.entities.User;
 
 public class Scoreboard extends Command {
 
-	public Scoreboard() {
-		String prefix = Bot.getBotInstance().getPrefix();
-		helpEntry = "**BASICS**\n\"" + prefix + "scoreboard\" displays the current score for this channel's scoreboard.\n**CREATING A SCOREBOARD FOR THE CHANNEL**\nSimply use the command \"" + prefix + "scoreboard create\" to create a scoreboard. If one exists already, this command will overwrite the previous board.\n**CLEARING THE SCOREBOARD**\nThe current scoreboard may be erased from this channel with \"" + prefix + "scoreboard clear\".";
-		commands = new String[] {"scoreboard", "sb"};
+	public Scoreboard(String command, String[] args, MessageChannel channel, User author) {
+		super(command, args, channel, author);
 	}
 
 	@Override
-	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	public void run() {
 		if (channel.getType().equals(ChannelType.PRIVATE))
-			return false;
+			return;
 		ScoreboardHandler sh = Bot.getBotInstance().getScoreboardHandler();
 		if (args.length > 0) {
 			if (args[0].equals("create")) {
@@ -31,10 +29,10 @@ public class Scoreboard extends Command {
 				if (sh.getScoreboardById(channel.getId()) != null) {
 					channel.sendMessage("Created scoreboard for channel " + channel.getName()).queue();;
 					sh.saveScoreboards();
-					return true;
+					return;
 				} else {
 					channel.sendMessage("Could not create scoreboard.").queue();;
-					return false;
+					return;
 				}
 			} else if (args[0].equals("clear")) {
 				/*if (th.getTriviaById(channel.id) !== null) {
@@ -44,23 +42,23 @@ public class Scoreboard extends Command {
 				if (sh.removeScoreboard(channel.getId())) {
 					channel.sendMessage("Removed scoreboard for channel " + channel.getName()).queue();;
 					sh.saveScoreboards();
-					return true;
+					return;
 				} else {
 					channel.sendMessage("Could not remove scoreboard.").queue();;
-					return false;
+					return;
 				}
 			} 
 		} else {
 			org.dsher.kingbot.model.content.scoreboard.Scoreboard scoreboard = sh.getScoreboardById(channel.getId());
 			if (scoreboard != null) {
 				channel.sendMessage(scoreboard.buildScoreboard(false, "")).queue();;
-				return true;
+				return;
 			} else {
 				channel.sendMessage("Could not find scoreboard.").queue();;
-				return false;
+				return;
 			}
 		}
-		return false;
+		return;
 	}
 
 }

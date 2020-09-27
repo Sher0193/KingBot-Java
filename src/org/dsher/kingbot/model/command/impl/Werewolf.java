@@ -13,15 +13,25 @@ import net.dv8tion.jda.api.entities.User;
 
 public class Werewolf extends Command {
 
-	public Werewolf() {
-		String name = Bot.getBotInstance().getName();
-		String prefix = Bot.getBotInstance().getPrefix();
-		helpEntry = "**ONE NIGHT ULTIMATE WEREWOLF**\nA hidden-role style game. " + name + " will manage assigning roles, and walk the players through the night. For full ONUW rules, please see https://www.fgbradleys.com/rules/rules2/OneNightUltimateWerewolf-rules.pdf.\n**ARGUMENTS**\n``" + prefix + "ww create`` to create a new game instance for the current channel.\n``" + prefix + "ww end`` to remove said instance.\n``" + prefix + "ww join`` to join a game (that hasn't begun yet)\n``" + prefix + "ww leave`` to leave said game\n``" + prefix + "ww start`` to begin a game, once at least three players have joined.";
-		commands = new String[] {"werewolf", "ww"};
+	public Werewolf(String command, String[] args, MessageChannel channel, User author) {
+		super(command, args, channel, author);
+	}
+
+	private String usersInGameToString(Game game) {
+		String playerList = "";
+		for (Player player : game.getWerewolfGame().getPlayers()) {
+			playerList += player.getUser().getName() + ", ";
+		}
+		if (playerList.isEmpty()) {
+			playerList = "No players found.";
+		} else {
+			playerList = playerList.substring(0, playerList.length() - 2) + ".";
+		}
+		return playerList;
 	}
 
 	@Override
-	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	public void run() {
 		if (args.length > 0) {
 			WerewolfHandler wwh = Bot.getBotInstance().getWerewolfHandler();
 			Game game = wwh.getGameById(channel.getId());
@@ -29,48 +39,48 @@ public class Werewolf extends Command {
 				case "create":
 					if (wwh.addGame(channel)) {
 						channel.sendMessage("Started a new One Night Ultimate Werewolf game in channel " + channel.getName() + ".").queue();
-						return true;
+						return;
 					}
 					channel.sendMessage("Could not add new game.").queue();
-					return false;
+					return;
 				case "start":
 					if (game == null) 
-						return false;
+						return;
 					org.dsher.kingbot.model.content.werewolf.Werewolf ww = game.getWerewolfGame();
 					if (ww != null && ww.getPlayers().size() >= 3) {
 						Thread thread = new Thread(game);
 						thread.start();
 					}
-					return false;
+					return;
 				case "end":
 					if (wwh.removeGame(channel.getId())) {
 						channel.sendMessage("Removed One Night Ultimate Werewolf game from channel " + channel.getName() + ".").queue();
-						return true;
+						return;
 					}
 					channel.sendMessage("Could not remove game.").queue();
-					return false;
+					return;
 				case "join":
 					if (game == null)
-						return false;
+						return;
 					if (game.isStarted()) {
 						channel.sendMessage("Game in progress, cannot join.").queue();
 					}
 					if (game.getWerewolfGame().addPlayer(author)) {
 						channel.sendMessage("Successfully added " + author.getName() + " to the game.").queue();
-						return true;
+						return;
 					}
-					return false;
+					return;
 				case "leave":
 					if (game == null)
-						return false;
+						return;
 					if (game.isStarted()) {
 						channel.sendMessage("Game in progress, cannot leave.").queue();
 					}
 					if (game.getWerewolfGame().removePlayer(author)) {
 						channel.sendMessage(author.getName() + " successfully left the game.").queue();
-						return true;
+						return;
 					}
-					return false;
+					return;
 				case "players":
 					if (channel.getType() == ChannelType.PRIVATE) {
 						String gamesPlayerList = "";
@@ -84,12 +94,12 @@ public class Werewolf extends Command {
 							gamesPlayerList = "You are not currently in any active One Night Ultimate Werewolf games.";
 						}
 						channel.sendMessage(gamesPlayerList).queue();
-						return true;
+						return;
 					} else {
 						if (game == null)
-							return false;
+							return;
 						channel.sendMessage(usersInGameToString(game)).queue();
-						return true;
+						return;
 					}
 				case "accuse":
 					if (args.length >= 2) {
@@ -109,25 +119,12 @@ public class Werewolf extends Command {
 								channel.sendMessage("No player found by that name.").queue();;
 							}
 						}
-						return true;
+						return;
 					}
-					return false;
+					return;
 			}
 		}
-		return false;
-	}
-
-	private String usersInGameToString(Game game) {
-		String playerList = "";
-		for (Player player : game.getWerewolfGame().getPlayers()) {
-			playerList += player.getUser().getName() + ", ";
-		}
-		if (playerList.isEmpty()) {
-			playerList = "No players found.";
-		} else {
-			playerList = playerList.substring(0, playerList.length() - 2) + ".";
-		}
-		return playerList;
+		return;
 	}
 
 }

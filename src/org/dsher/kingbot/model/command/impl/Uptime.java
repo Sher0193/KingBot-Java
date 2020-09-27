@@ -7,14 +7,13 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
 public class Uptime extends Command {
-	
-	public Uptime() {
-		helpEntry = "Outputs how long " + Bot.getBotInstance().getName() + " has been online.";
-		commands = new String[] {"uptime", "up"};
+
+	public Uptime(String command, String[] args, MessageChannel channel, User author) {
+		super(command, args, channel, author);
 	}
 
 	@Override
-	protected boolean execute(String command, String[] args, MessageChannel channel, User author) {
+	public void run() {
 		long curTime = System.currentTimeMillis();
 	    long uptime = curTime - Bot.getBotInstance().getLaunchTime();
 
@@ -28,7 +27,7 @@ public class Uptime extends Command {
 
 	    //TODO: format method in utils
 	    channel.sendMessage(Bot.getBotInstance().getName() + " has been online for " + (days > 0 ? (days + " day" + (days == 1 ? "" : "s") + ", ") : "") + (hours > 0 ? (hours + " hour" + (hours == 1 ? "" : "s") + ", ") : "") + minutes + " minute" + (minutes == 1 ? ("") : "s") + ".").queue();
-	    return true;
+	    return;
 	}
 	
 
